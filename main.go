@@ -162,6 +162,10 @@ func tagFileResources(path string, dir string, filter string, tags string, tfVer
 func jsonToHclMap(tags string) string {
 	var tagsMap map[string]string
 	err := json.Unmarshal([]byte(tags), &tagsMap)
+	if err != nil {
+		log.Printf("[ERROR] Invalid input tags! must be a valid JSON.\nInput: %s\nError: %s\n", tags, err.Error())
+		os.Exit(1)
+	}
 	PanicOnError(err, nil)
 
 	keys := utils.SortObjectKeys(tagsMap)
